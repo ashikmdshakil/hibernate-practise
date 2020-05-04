@@ -1,5 +1,8 @@
 package com.practise.hibernatePractise;
 
+import java.util.List;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,29 +17,22 @@ import org.hibernate.service.ServiceRegistry;
 public class App {
 	public static void main(String[] args) {
 		Student student = new Student();
-
-		student.setId(1);
-		student.setDepartment("Software Engineering");
-		student.setUniversity("Daffodil International University");
-		Laptop laptop = new Laptop();   
-		laptop.setId(1);
-		laptop.setCompanyName("Dell");
-		laptop.setMacAdress("3453453");
-		laptop.setStudent(student);
-		student.getLaptop().add(laptop);
-
-		Configuration config = new Configuration().configure().addAnnotatedClass(Student.class)
-				.addAnnotatedClass(Laptop.class);
+	
+		//student.setName("Nusrat Jahan Anika");
+		//student.setDepartment("Software Engineering");
+		//student.setUniversity("Daffodil International University");
+		
+		Configuration config = new Configuration().configure().addAnnotatedClass(Student.class);
 		ServiceRegistry reg = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
 		SessionFactory sf = config.buildSessionFactory(reg);
 		Session session = sf.openSession();
 		Transaction txn = session.beginTransaction();
-		// student = (Student) session.get(Student.class,1);
-		session.save(student);
-		session.save(laptop);
+		//session.save(student);
+		Query query = session.createQuery("from Student where id = 1");
+		//List<Student> students = query.list();
+		student = (Student) query.uniqueResult();
 		txn.commit();
-		// System.out.println(student);
-		// System.out.println(student.getLaptop());
-
+		System.out.println(student);
+		
 	}
 }
