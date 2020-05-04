@@ -16,19 +16,31 @@ public class App
     public static void main( String[] args )
     {	
     	Student student = new Student();
-    	student.setId(1);
-    	student.setName("Ashik Md Shakil");
-    	student.setDepartment("SWE");
-    	student.setUniversity("Daffodil International University");
+		
+		/*
+		 * student.setId(1); student.setDepartment("Software Engineering");
+		 * student.setUniversity("Daffodil International University");
+		 * 
+		 * 
+		 * Laptop laptop = new Laptop(); laptop.setId(1); laptop.setCompanyName("Dell");
+		 * laptop.setMacAdress("3453453");
+		 * 
+		 * student.setLaptop(laptop);
+		 */
+		 
+		 
     	
-        Configuration config = new Configuration();
-        config.configure().addAnnotatedClass(Student.class);
+        Configuration config = new Configuration().configure().addAnnotatedClass(Student.class).addAnnotatedClass(Laptop.class);
         ServiceRegistry reg = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
         SessionFactory sf = config.buildSessionFactory(reg);
         Session session = sf.openSession();
         Transaction txn = session.beginTransaction();
-       
+        student = (Student) session.get(Student.class,1);
+        //session.save(student);
+        //session.save(laptop);
         txn.commit();
+        System.out.println(student);
+        System.out.println(student.getLaptop());
         
     }
 }
